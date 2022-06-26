@@ -32,11 +32,3 @@ class BaseViewModel extends ChangeNotifier {
     if (!_disposed) notifyListeners();
   }
 }
-
-
-
-
-//////Doings101///////
-/////////Doings102///////
-////////////Doings105//////
-///trial trial trail//////
