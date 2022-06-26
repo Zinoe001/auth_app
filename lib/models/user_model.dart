@@ -10,12 +10,12 @@ class UserModel {
   final String name;
 
   factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-        id: json["book_id"].toString(),
+        id: json["user_id"].toString(),
         name: json["name"],
       );
 
   Map<String, dynamic> toMap() => {
-        "book_id": id,
+        "user_id": id,
         "name": name,
       };
 }
