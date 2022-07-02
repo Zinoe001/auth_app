@@ -1,21 +1,19 @@
 import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/core/utils/text.dart';
-import 'package:auth_app/views/auth/login/login_view.dart';
-import 'package:auth_app/views/auth/reset%20password/view_model/reset_password_view_model.dart';
+import 'package:auth_app/views/auth/view_model/auth_view_model.dart';
 import 'package:auth_app/widgets/app_button.dart';
 import 'package:auth_app/views/auth/components/auth_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final _vm =
-    ChangeNotifierProvider.autoDispose((ref) => ResetPasswordViewModel());
+final _viewModelProvider =
+    ChangeNotifierProvider.autoDispose((ref) => AuthViewModel());
 
-class ResetPasswordScreen extends ConsumerWidget {
-  ResetPasswordScreen({Key? key}) : super(key: key);
-  final TextEditingController controller = TextEditingController();
+class ResetPasswordView extends ConsumerWidget {
+ const ResetPasswordView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var model = ref.watch(_vm);
+    var model = ref.watch(_viewModelProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -28,33 +26,8 @@ class ResetPasswordScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Container(
-                      height: 36,
-                      width: 36,
-                      // padding: const EdgeInsets.fromLTRB(7, 10, 15, 10),
-
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 2,
-                              color: Colors.grey.shade200,
-                              style: BorderStyle.solid),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10))),
-                      // removed center
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        size: 13,
-                        color: kPrimaryColor,
-                      ),
-                    ),
-                  ),
                   const SizedBox(
-                    height: 24,
+                    height: 55,
                   ),
                   Center(
                     child: AppText.heading4M(
@@ -76,7 +49,7 @@ class ResetPasswordScreen extends ConsumerWidget {
                   ),
                   AuthTextField(
                     keyboardType: TextInputType.emailAddress,
-                    controller: controller,
+                    controller: model.controller,
                     hintText: "Enter your new password",
                     icon: Icons.email,
                     title: "New Password",
@@ -88,7 +61,7 @@ class ResetPasswordScreen extends ConsumerWidget {
                   AuthTextField(
                     keyboardType: TextInputType.emailAddress,
                     isPassword: true,
-                    controller: controller,
+                    controller: model.controller,
                     hintText: "Confirm password above",
                     icon: Icons.password,
                     title: "Confirm Password",
@@ -100,9 +73,8 @@ class ResetPasswordScreen extends ConsumerWidget {
                     title: "Reset Password",
                     onTap: () {
                       FocusScope.of(context).unfocus();
-                      model.validate();
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginView()));
+                      // model.validate();
+                      model.navToLogin();
                     },
                   ),
                   const SizedBox(height: 30),

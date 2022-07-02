@@ -1,25 +1,35 @@
-
-
 class UserModel {
   UserModel({
-    required this.id,
-    required this.name,
+    required this.firstName,
+    required this.lastName,
     required this.email,
+    required this.password,
+    required this.phone,
+    required this.pin,
   });
 
-  final String id;
-  final String name;
+  final String firstName;
+  final String lastName;
   final String email;
+  final String password;
+  final String phone;
+  final String pin;
 
-  factory UserModel.fromMap(Map<String, dynamic> json) => UserModel(
-        id: json["user_id"].toString(),
-        name: json["name"],
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+        firstName: json["first_name"],
+        lastName: json["last_name"],
         email: json["email"],
+        password: json["password"],
+        phone: json["phone"].toString(),
+        pin: json["pin"].toString(),
       );
 
   Map<String, dynamic> toMap() => {
-        "user_id": id,
-        "name": name,
+        "first_name": firstName,
+        "last_name": lastName,
         "email": email,
+        "password": password,
+        "phone": phone,
+        "pin": pin,
       };
 }

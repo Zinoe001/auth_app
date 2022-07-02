@@ -1,22 +1,18 @@
 import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/core/utils/text.dart';
-import 'package:auth_app/views/auth/login/login_view.dart';
-import 'package:auth_app/views/auth/verification/verification_view.dart';
-import 'package:auth_app/views/auth/signup/view_model/signup_view_model.dart';
+import 'package:auth_app/views/auth/view_model/auth_view_model.dart';
 import 'package:auth_app/widgets/app_button.dart';
 import 'package:auth_app/views/auth/components/auth_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final _vm = ChangeNotifierProvider.autoDispose((ref) => SignUpViewModel());
+final _viewModelProvider = ChangeNotifierProvider.autoDispose((ref) => AuthViewModel());
 
 class SignUpView extends ConsumerWidget {
-  SignUpView({Key? key}) : super(key: key);
-
-  final TextEditingController controller = TextEditingController();
+  const SignUpView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var model = ref.watch(_vm);
+    var model = ref.watch(_viewModelProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -31,9 +27,7 @@ class SignUpView extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 30),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
+                    onTap: model.navBack,
                     child: Container(
                       height: 36,
                       width: 36,
@@ -68,7 +62,7 @@ class SignUpView extends ConsumerWidget {
                   ),
                   Center(
                     child: AppText.textFieldR(
-                      "Register to start your ZeeFlights application process, and become one of the amazing contestants.",
+                      "Register to start your ZeeFlights application process, and enjoy comfortable and affordable flights.",
                       color: const Color(0xff828282),
                       height: 1.5,
                       centered: true,
@@ -78,76 +72,26 @@ class SignUpView extends ConsumerWidget {
                     height: 24,
                   ),
                   AuthTextField(
-                    keyboardType: TextInputType.text,
-                    isPassword: false,
-                    controller: controller,
-                    hintText: "Enter your full name",
-                    icon: Icons.person,
-                    title: "Full Name",
-                    validator: (v) => null,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AuthTextField(
                       keyboardType: TextInputType.emailAddress,
-                      controller: controller,
+                      controller: model.controller,
                       hintText: "Enter your email address",
                       icon: Icons.email,
                       title: "Email",
                       validator: (v) => null),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  AuthTextField(
-                      keyboardType: TextInputType.visiblePassword,
-                      // onValueChnaged: model.onPasswordChanged,
-                      isPassword: true,
-                      controller: controller,
-                      hintText: "Create a very strong password",
-                      icon: Icons.password,
-                      title: "Password",
-                      validator: (v) => null),
-                  Row(
-                    children: [
-                      // Checkbox(
-                      //   materialTapTargetSize:
-                      //       MaterialTapTargetSize.shrinkWrap,
-                      //   visualDensity: const VisualDensity(horizontal: -4),
-                      //   shape: const RoundedRectangleBorder(
-                      //       borderRadius:
-                      //           BorderRadius.all(Radius.circular(4))),
-                      //   value: model.isChecked,
-                      //   onChanged: (v) => model.acceptTerms(v!),
-                      // ),
-                      const SizedBox(width: 10),
-                      InkWell(
-                          onTap: () {
-                            // model.acceptTerms(!model.isChecked);
-                          },
-                          child: AppText.captionR(
-                              "I accept the terms & conditions"))
-                    ],
-                  ),
                   const Spacer(),
                   AppButton(
                       title: "Register",
                       onTap: () {
-                        FocusScope.of(context).unfocus();
-                        model.validate();
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    const VerificationView()));
+                        // FocusScope.of(context).unfocus();
+                        // model.validate();
+                        model.navToVerification();
                       }),
                   const SizedBox(
                     height: 12,
                   ),
                   Center(
                     child: InkWell(
-                      onTap: () => Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginView())),
+                      onTap: model.navToLogin,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 13, horizontal: 16),
@@ -179,3 +123,5 @@ class SignUpView extends ConsumerWidget {
     );
   }
 }
+
+

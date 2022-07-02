@@ -1,3 +1,6 @@
+import 'package:auth_app/core/navigation/app_router.dart';
+import 'package:auth_app/core/navigation/navigation_service.dart';
+import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/views/splash/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -24,8 +27,10 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: kPrimaryColor,
       ),
+      onGenerateRoute: AppRouter.generateRoute,
+      navigatorKey: NavigationService.instance.navigatorKey,
       home: const SplashView(),
     );
   }

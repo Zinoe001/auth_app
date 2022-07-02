@@ -1,4 +1,4 @@
-import 'package:auth_app/core/utils/text.dart';
+import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/views/splash/components/show_sheet.dart';
 import 'package:flutter/material.dart';
 
@@ -29,9 +29,25 @@ class SplashView extends StatelessWidget {
                 children: [
                   InkWell(
                     onTap: () => showSheet(context),
-                    child: AppText.heading6M("Tap for more info..."),
+                    child: Container(
+                      height: 45,
+                      width: 45,
+                      decoration: BoxDecoration(
+                        color: kSecondaryColor,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: const Center(
+                          child: Icon(
+                        Icons.keyboard_arrow_right_outlined,
+                        size: 35,
+                        color: Colors.white,
+                      )),
+                    ),
                   ),
                 ],
+              ),
+              const SizedBox(
+                height: 45,
               )
             ],
           ),

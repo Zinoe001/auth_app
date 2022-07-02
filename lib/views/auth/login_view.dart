@@ -1,21 +1,18 @@
 import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/core/utils/text.dart';
-import 'package:auth_app/views/auth/reset%20password/reset_password_view.dart';
-import 'package:auth_app/views/auth/login/view_model/login_view_model.dart';
-import 'package:auth_app/views/body/body.dart';
+import 'package:auth_app/views/auth/view_model/auth_view_model.dart';
 import 'package:auth_app/widgets/app_button.dart';
 import 'package:auth_app/views/auth/components/auth_textfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final _vm = ChangeNotifierProvider.autoDispose((ref) => LoginViewModel());
+final _viewModelProvider = ChangeNotifierProvider.autoDispose((ref) => AuthViewModel());
 
 class LoginView extends ConsumerWidget {
-  LoginView({Key? key}) : super(key: key);
-  final TextEditingController controller = TextEditingController();
+ const LoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var model = ref.watch(_vm);
+    var model = ref.watch(_viewModelProvider);
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -30,9 +27,7 @@ class LoginView extends ConsumerWidget {
                 children: [
                   const SizedBox(height: 30),
                   GestureDetector(
-                    onTap: () {
-                      Navigator.of(context).pop();
-                    },
+                    onTap: model.navBack,
                     child: Container(
                       height: 36,
                       width: 36,
@@ -75,7 +70,7 @@ class LoginView extends ConsumerWidget {
                   ),
                   AuthTextField(
                     keyboardType: TextInputType.emailAddress,
-                    controller: controller,
+                    controller: model.controller,
                     hintText: "Enter your email address",
                     icon: Icons.email,
                     title: "Email",
@@ -87,7 +82,7 @@ class LoginView extends ConsumerWidget {
                   AuthTextField(
                     keyboardType: TextInputType.emailAddress,
                     isPassword: true,
-                    controller: controller,
+                    controller: model.controller,
                     hintText: "Enter your password",
                     icon: Icons.password,
                     title: "Password",
@@ -95,43 +90,12 @@ class LoginView extends ConsumerWidget {
                     // (v) => Validators.string("password", v),
                   ),
                   const Spacer(),
-                  // Center(
-                  //   child: InkWell(
-                  //     onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (context)=> SignUpView())),
-                  //     child: Container(
-                  //       padding: const EdgeInsets.symmetric(
-                  //           vertical: 13, horizontal: 16),
-                  //       height: 45,
-                  //       decoration: BoxDecoration(
-                  //         borderRadius: BorderRadius.circular(18),
-                  //         border: Border.all(
-                  //           color: const Color(0xfff7f7f7),
-                  //         ),
-                  //       ),
-                  //       child: Text.rich(
-                  //         TextSpan(text: "I’m new, ?", children: [
-                  //           TextSpan(
-                  //             text: " Register",
-                  //             style: TextStyle(color: kPrimaryColor),
-                  //           ),
-                  //         ]),
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  // const SizedBox(
-                  //   height: 12,
-                  // ),
                   AppButton(
                     title: "Login",
                     onTap: () {
                       FocusScope.of(context).unfocus();
                       model.validate();
                       model.navToHome();
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Body()));
                     },
                   ),
                   const SizedBox(
@@ -139,10 +103,7 @@ class LoginView extends ConsumerWidget {
                   ),
                   Center(
                     child: InkWell(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ResetPasswordView())),
+                      onTap: model.navToForgotPassword,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                             vertical: 13, horizontal: 16),

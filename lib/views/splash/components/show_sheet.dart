@@ -1,7 +1,7 @@
 import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/core/utils/text.dart';
-import 'package:auth_app/views/auth/login/login_view.dart';
-import 'package:auth_app/views/auth/signup/signup_view.dart';
+import 'package:auth_app/views/auth/login_view.dart';
+import 'package:auth_app/views/auth/signup_view.dart';
 import 'package:auth_app/widgets/app_button.dart';
 import 'package:flutter/material.dart';
 
@@ -33,8 +33,8 @@ showSheet(context) {
                 // _navigationService.goBack();
                 // NavigationService.instance.navigateToReplace(LoginViewRoute);
 
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => LoginView()));
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const LoginView()));
               },
             ),
             const SizedBox(
@@ -47,8 +47,8 @@ showSheet(context) {
                 // _navigationService.goBack();
                 // _navigationService
                 //     .navigateToReplace(EmailVerificationViewRoute);
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => SignUpView()));
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const SignUpView()));
               },
             ),
             const SizedBox(
@@ -58,18 +58,16 @@ showSheet(context) {
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.info_outline_rounded,
-                    color: Theme.of(context).textTheme.bodyText1?.color ??
-                        Colors.black,
+                    color: Colors.white,
                     size: 15,
                   ),
                   const SizedBox(
                     width: 8,
                   ),
-                  AppText.captionM(
-                    "Check out our privacy policy.",
-                  )
+                  AppText.captionM("Check out our privacy policy.",
+                      color: Colors.white)
                 ],
               ),
             )
