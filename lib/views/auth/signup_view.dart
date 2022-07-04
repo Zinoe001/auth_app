@@ -1,12 +1,15 @@
 import 'package:auth_app/core/utils/colors.dart';
 import 'package:auth_app/core/utils/text.dart';
+import 'package:auth_app/core/utils/validators.dart';
 import 'package:auth_app/views/auth/view_model/auth_view_model.dart';
 import 'package:auth_app/widgets/app_button.dart';
 import 'package:auth_app/views/auth/components/auth_textfield.dart';
+import 'package:auth_app/widgets/loader_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final _viewModelProvider = ChangeNotifierProvider.autoDispose((ref) => AuthViewModel());
+final _viewModelProvider =
+    ChangeNotifierProvider.autoDispose((ref) => AuthViewModel());
 
 class SignUpView extends ConsumerWidget {
   const SignUpView({Key? key}) : super(key: key);
@@ -15,38 +18,42 @@ class SignUpView extends ConsumerWidget {
     var model = ref.watch(_viewModelProvider);
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: LoadingPage(
+          isBusy: model.isBusy,
           child: Form(
             key: model.formKey,
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: ListView(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 children: [
                   const SizedBox(height: 30),
-                  GestureDetector(
-                    onTap: model.navBack,
-                    child: Container(
-                      height: 36,
-                      width: 36,
-                      // padding: const EdgeInsets.fromLTRB(7, 10, 15, 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      GestureDetector(
+                        onTap: model.navBack,
+                        child: Container(
+                          height: 36,
+                          width: 36,
+                          // padding: const EdgeInsets.fromLTRB(7, 10, 15, 10),
 
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                              width: 2,
-                              color: Colors.grey.shade200,
-                              style: BorderStyle.solid),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10))),
-                      // removed center
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        size: 13,
-                        color: kPrimaryColor,
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  width: 2,
+                                  color: Colors.grey.shade200,
+                                  style: BorderStyle.solid),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10))),
+                          // removed center
+                          child: Icon(
+                            Icons.arrow_back_ios,
+                            size: 13,
+                            color: kPrimaryColor,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
 
                   // const BuildAppBar(title: ""),
@@ -73,19 +80,15 @@ class SignUpView extends ConsumerWidget {
                   ),
                   AuthTextField(
                       keyboardType: TextInputType.emailAddress,
-                      controller: model.controller,
+                      controller: model.emailController,
                       hintText: "Enter your email address",
                       icon: Icons.email,
                       title: "Email",
-                      validator: (v) => null),
-                  const Spacer(),
-                  AppButton(
-                      title: "Register",
-                      onTap: () {
-                        // FocusScope.of(context).unfocus();
-                        // model.validate();
-                        model.navToVerification();
-                      }),
+                      validator: (v) => Validators.email(v)),
+                  const SizedBox(
+                    height: 250,
+                  ),
+                  AppButton(title: "Register", onTap: model.verifyEmail),
                   const SizedBox(
                     height: 12,
                   ),
@@ -103,12 +106,14 @@ class SignUpView extends ConsumerWidget {
                           ),
                         ),
                         child: Text.rich(
-                          TextSpan(text: "Already have an account,", children: [
-                            TextSpan(
-                              text: "  Login",
-                              style: TextStyle(color: kPrimaryColor),
-                            ),
-                          ]),
+                          TextSpan(
+                              text: "Already have an account,",
+                              children: [
+                                TextSpan(
+                                  text: "  Login",
+                                  style: TextStyle(color: kPrimaryColor),
+                                ),
+                              ]),
                         ),
                       ),
                     ),
@@ -123,5 +128,3 @@ class SignUpView extends ConsumerWidget {
     );
   }
 }
-
-
